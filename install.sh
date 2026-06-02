@@ -73,7 +73,22 @@ elif [ -d "$target_dir" ] && [ "$(find "$target_dir" -mindepth 1 -maxdepth 1 2>/
   exit 1
 else
   say "Downloading GSA Brain..."
-  git clone --depth 1 "$DEFAULT_REPO_URL" "$target_dir"
+  if ! git clone --depth 1 "$DEFAULT_REPO_URL" "$target_dir"; then
+    say ""
+    say "GSA Brain could not be downloaded."
+    say ""
+    say "Most likely reason:"
+    say "- The GSA Brain repo is private, and this computer/agent does not have read-only GitHub access."
+    say ""
+    say "How to fix it:"
+    say "1. Make sure this GitHub user has read-only access to:"
+    say "   $DEFAULT_REPO_URL"
+    say "2. If you are using Codex/Claude in the cloud, connect GitHub there first."
+    say "3. If you are on your own Mac, sign in to GitHub in Terminal or GitHub Desktop, then run this installer again."
+    say ""
+    say "The public installer is working; GitHub is blocking access to the private repo."
+    exit 1
+  fi
 fi
 
 say ""
